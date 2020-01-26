@@ -1,0 +1,31 @@
+service: todotada-application-backend
+
+provider:
+  name: aws
+  region: eu-west-1
+  runtime: nodejs12.x
+
+
+functions:
+  
+  
+  todotada:
+    handler: handler.app
+    events:
+      - http:
+         method: get
+         path: todotada
+         cors: true
+      - http:
+          method: put
+          path: todotada/{id}
+          cors: true
+      - http:
+          method: delete
+          path: todotada/{id}
+          cors: true
+      - http:
+          method: post
+          path: todotada
+          cors: true
+
