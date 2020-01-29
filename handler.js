@@ -35,16 +35,19 @@ app.get("/todotada", function (request, response) {
 
 // POST
 app.post("/todotada", function(request, response) {
-
- const addedTask = request.body;
-
- response.status(200).json({
-   message: `Successfully added task with name: ${addedTask.task}, date: ${addedTask.date}, userID: ${addedTask.userID}`
- });
+  const newTask = request.body;
+  connection.query("INSERT INTO Task SET ?", [newTask], function (err, data){
+    if (err) {
+      response.status(500).json({
+        error: err
+      });
+    } else {
+     newTask.id = data.insertId; 
+     response.status(201).json(newTask);
+    }
+  });
 });
-
-
-
+ 
 // PUT
 
 app.put("/todotada/:id", function(request, response) {
