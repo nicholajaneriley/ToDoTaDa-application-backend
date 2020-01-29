@@ -7,10 +7,12 @@ provider:
 
 
 functions:
-  
-  
   todotada:
     handler: handler.app
+    environment:
+      DB_HOST: ${opt:DB_HOST}
+      DB_USER: ${opt:DB_USER}
+      DB_PASSWORD: ${opt:DB_PASSWORD}
     events:
       - http:
          method: get
