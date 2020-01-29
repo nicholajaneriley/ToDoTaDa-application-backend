@@ -51,25 +51,35 @@ app.post("/todotada", function(request, response) {
 // PUT
 
 app.put("/todotada/:id", function(request, response) {
- const updatedTask = request.body;
- const id = request.params.id;
+  const updatedTask = request.body;
+  const id = request.params.id;
 
- response.status(200).json({
-   message: `Successfully updated task ID ${id} with name: ${updatedTask.task}, date: ${updatedTask.date}, emotion: ${updatedTask.emotion} userID: ${updatedTask.userID}`
- });
+  connection.query(`UPDATE Task SET ? WHERE TaskID=?`[updatedTask, id],
+    function (err) {
+      if (err) {
+        response.status(500).json({ error: err });
+      } else {
+        response.sendStatus(200);
+      }
+    }
+  );
 });
 
 // DELETE
 
 app.delete("/todotada/:id", function(request, response) {
-
- const id = request.params.id;
- const deletedTask = request.delete;
-
- response.status(200).json({
-   message: `Successfully deleted to do task ${id}`
- });
-});
+    const id = request.params.id;
+    connection.query("DELETE FROM Task WHERE TaskID=?", [id], function (err){
+      if (err) {
+        response.status(500).json({
+          error: err
+        });
+      } else {
+        response.sendStatus(200);
+      }
+    });
+  });
+ 
 
 
 module.exports.app = serverlessHttp(app);
