@@ -12,22 +12,26 @@ const connection = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: "todotada"
+  database: "toDoTaDa"
 });
 
 
 //GET
 app.get("/todotada", function (request, response) {
 
-  response.status(200).json({
-    task: [
-      {taskID: 1, completed: true, date: "2020-01-09", task: "Make cake", emotion: "happy", userID: 1},
-      {taskID: 2, completed: true, date: "2020-01-10", task: "Learn JavaScript", emotion: "happy", userID: 2},
-      {taskID: 3, completed: false, date: "2020-01-19", task: "Learn Serverless", userID: 1},
-      {taskID: 4, completed: false, date: "2020-01-29", task: "Install Postman", userID: 3},
-    ]
+  connection.query("SELECT * FROM Task", function (err, data) {
+    if (err) {
+      response.status(500).json({
+        error: err
+      });
+    } else {
+      response.status(200).json({
+        task: data
+      });
+    }
   });
 });
+
 
 // POST
 app.post("/todotada", function(request, response) {
