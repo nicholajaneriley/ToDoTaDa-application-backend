@@ -2,12 +2,21 @@ const express = require("express");
 const cors = require("cors");
 const serverlessHttp = require("serverless-http");
 const bodyParser = require("body-parser");
+const mysql = require("mysql");
 
 const app = express ();
 app.use(cors());
 app.use(bodyParser.json());
 
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: "todotada"
+});
 
+
+//GET
 app.get("/todotada", function (request, response) {
 
   response.status(200).json({
