@@ -25,6 +25,10 @@ app.get("/todotada", function (request, response) {
         error: err
       });
     } else {
+      const mapped = data.map(task => {
+        task.completed = task.completed === 1 ? true : false;
+        return task;
+      });
       response.status(200).json({
         task: data
       });
@@ -53,7 +57,7 @@ app.put("/todotada/:id", function (request, response) {
   const updatedTask = request.body;
   const id = request.params.id;
 
-  connection.query(`UPDATE Task SET ? WHERE TaskID=?`, [updatedTask, id],
+  connection.query(`UPDATE Task SET ? WHERE id=?`, [updatedTask, id],
     function (err) {
       if (err) {
         response.status(500).json({ error: err });
@@ -68,7 +72,7 @@ app.put("/todotada/:id", function (request, response) {
 // DELETE
 app.delete("/todotada/:id", function (request, response) {
   const id = request.params.id;
-  connection.query("DELETE FROM Task WHERE TaskID=?", [id], function (err) {
+  connection.query("DELETE FROM Task WHERE id=?", [id], function (err) {
     if (err) {
       response.status(500).json({
         error: err
