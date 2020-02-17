@@ -16,7 +16,7 @@ const connection = mysql.createConnection({
 });
 
 
-//GET
+//GET working
 app.get("/todotada", function (request, response) {
 
   connection.query("SELECT * FROM Task", function (err, data) {
